@@ -15,10 +15,10 @@ https://github.com/user-attachments/assets/21731753-b6cb-497e-9a2d-0b8df6af6ed0
 
 ### Walkthrough
 
-1. Open Wireshark.
+1. Open **Wireshark**.
 2. Select the network interface **enp2s0**
-3. Click on the Blue Fin to begin capture.
-4. After X amount of seconds, stop capture.
+3. Click on the **Blue Fin** to begin capture.
+4. After X amount of seconds, **stop** capture.
 5. Use the **ftp** filter to answer the Questions.
 
 **Alternative Filters**
