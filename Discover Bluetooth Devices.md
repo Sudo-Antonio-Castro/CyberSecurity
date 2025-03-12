@@ -2,7 +2,11 @@
 
 In this video, we will use the Terminal to scan for active Bluetooth devices.
 
-**Pending Video**
+
+
+https://github.com/user-attachments/assets/673223e3-2a83-40e4-941c-58ba931a0f74
+
+
 
 ## Questions
 
