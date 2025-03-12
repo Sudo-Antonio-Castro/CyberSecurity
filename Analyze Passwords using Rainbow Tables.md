@@ -44,3 +44,11 @@ https://github.com/user-attachments/assets/1c650077-e9aa-475f-b28a-59b6733a0161
 
 [**rcrack**](http://www.cs.csi.cuny.edu/~zhangx/papers/P_2018_Sarnoff_McMahon_Zhang.pdf)
 : Runs a comparison between extracted password hashes and rainbow tables.
+
+[**1 20 0 1000 1000 0**](http://project-rainbowcrack.com/generate.htm):
+1. plaintext_len_min = **1** *Limits the plaintext length range of the rainbow table*.
+2. plaintext_len_max = **20** *Limits the plaintext length range of the rainbow table*.
+3. table_index = **0** *Selects the reduction function*
+4. chain_len = **1000** *Rainbow chain length, longer chain stores more plaintexts and requires longer time to generate*
+5. chain_num = **1000** *Rainbow chains to generate*
+6. part_index = **0** *To store a large rainbow table in many smaller files, use different number in this parameter for each part and keep all other parameters identical*
