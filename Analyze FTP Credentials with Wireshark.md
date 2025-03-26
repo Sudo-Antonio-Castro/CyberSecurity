@@ -22,6 +22,15 @@ https://github.com/user-attachments/assets/21731753-b6cb-497e-9a2d-0b8df6af6ed0
 5. Use the **ftp** filter to answer the Questions.
 
 **Alternative Filters**
-1. Use **ftp.request.command==USER** to find the **User** account.
-2. Use **ftp.request.command==PASS** to find the **Password**.
-3. Use **ftp.request.command==RETR** to find the **File Retrieved**.
+1. Use this filter to find the **User** account.
+   ```
+   ftp.request.command==USER
+   ```
+2. Use this filter to find the **Password** account.
+   ```
+   ftp.request.command==PASS
+   ```
+3. Use this filter to find the **File Retrieved** account.
+   ```
+   ftp.request.command==RETR
+   ```
