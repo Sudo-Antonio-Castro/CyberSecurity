@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CyberSecurity Labs | Antonio Castro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Hands-on cybersecurity labs and walkthroughs by Antonio Castro — focused on secure, ethical practice and foundational security concepts."
+    />
+    <style>
+      :root {
+        --bg: #020617;
+        --bg-elevated: #020617;
+        --bg-card: #020617;
+        --bg-accent-soft: rgba(129, 140, 248, 0.12);
+        --accent: #818cf8;
+        --accent-strong: #6366f1;
+        --accent-2: #22c55e;
+        --text: #e5e7eb;
+        --text-strong: #f9fafb;
+        --text-muted: #9ca3af;
+        --border-subtle: rgba(148, 163, 184, 0.3);
+        --radius-lg: 18px;
+        --shadow-soft: 0 20px 45px rgba(15, 23, 42, 0.85);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, #1d265c, transparent 55%),
+          radial-gradient(circle at top right, #0f766e, transparent 55%),
+          radial-gradient(circle at bottom, #111827, #020617 65%);
+        display: flex;
+        justify-content: center;
+        padding: 2.5rem 1.5rem 3.5rem;
+      }
+
+      .shell {
+        width: 100%;
+        max-width: 980px;
+        background: radial-gradient(circle at top left, #111827, #020617 55%);
+        border-radius: 28px;
+        border: 1px solid var(--border-subtle);
+        box-shadow: var(--shadow-soft);
+        padding: 2.25rem 1.75rem 2.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .shell::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.17;
+        background: radial-gradient(
+          circle at top right,
+          rgba(129, 140, 248, 0.55),
+          transparent 55%
+        );
+        pointer-events: none;
+      }
+
+      @media (min-width: 880px) {
+        .shell {
+          padding: 2.75rem 2.5rem 2.8rem;
+        }
+      }
+
+      header {
+        position: relative;
+        display: flex;
+        gap: 1.75rem;
+        align-items: center;
+        margin-bottom: 2.4rem;
+        z-index: 1;
+        flex-wrap: wrap;
+      }
+
+      .avatar {
+        width: 96px;
+        height: 96px;
+        border-radius: 999px;
+        object-fit: cover;
+        border: 2px solid rgba(148, 163, 184, 0.6);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.8);
+        background: #020617;
+      }
+
+      @media (min-width: 720px) {
+        .avatar {
+          width: 110px;
+          height: 110px;
+        }
+      }
+
+      .headline {
+        flex: 1;
+        min-width: 230px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.22rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        color: var(--text-muted);
+        margin-bottom: 0.45rem;
+      }
+
+      .eyebrow-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--accent-strong), #22c55e);
+      }
+
+      h1 {
+        font-size: 1.9rem;
+        line-height: 1.15;
+        color: var(--text-strong);
+        margin-bottom: 0.35rem;
+      }
+
+      @media (min-width: 640px) {
+        h1 {
+          font-size: 2.1rem;
+        }
+      }
+
+      .title-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        align-items: baseline;
+      }
+
+      .title-role {
+        font-size: 1rem;
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .title-location {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+      }
+
+      .summary {
+        margin-top: 0.45rem;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        max-width: 560px;
+      }
+
+      .pill-row {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.85rem;
+      }
+
+      .pill {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        padding: 0.2rem 0.55rem;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        color: var(--text-muted);
+        background: rgba(15, 23, 42, 0.9);
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-top: 0.9rem;
+      }
+
+      .nav-links a {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.11em;
+        text-decoration: none;
+        padding: 0.32rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.55);
+        color: var(--text-muted);
+        background: rgba(15, 23, 42, 0.95);
+      }
+
+      .nav-links a:hover {
+        border-color: var(--accent-strong);
+        color: #e0e7ff;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 1.75rem;
+      }
+
+      @media (min-width: 920px) {
+        main {
+          grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr);
+          column-gap: 1.75rem;
+        }
+      }
+
+      .section {
+        background: linear-gradient(
+          140deg,
+          rgba(15, 23, 42, 0.97),
+          rgba(15, 23, 42, 0.9)
+        );
+        border-radius: 20px;
+        padding: 1.4rem 1.35rem 1.5rem;
+        border: 1px solid rgba(31, 41, 55, 0.95);
+      }
+
+      .section + .section {
+        margin-top: 0.5rem;
+      }
+
+      @media (min-width: 920px) {
+        .section {
+          padding: 1.5rem 1.4rem 1.55rem;
+        }
+      }
+
+      .section-header {
+        margin-bottom: 0.75rem;
+      }
+
+      .section-eyebrow {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--accent);
+        margin-bottom: 0.15rem;
+      }
+
+      .section h2 {
+        font-size: 1.1rem;
+        color: var(--text-strong);
+        margin-bottom: 0.1rem;
+      }
+
+      .section-body p {
+        font-size: 0.93rem;
+        color: var(--text-muted);
+        line-height: 1.65;
+      }
+
+      .labs-grid {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      @media (min-width: 720px) {
+        .labs-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .lab-card {
+        border-radius: 16px;
+        padding: 0.95rem 1rem 1rem;
+        background: radial-gradient(
+            circle at top left,
+            rgba(148, 163, 184, 0.16),
+            transparent 55%
+          ),
+          rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(55, 65, 81, 0.95);
+        display: flex;
+        flex-direction: column;
+        gap: 0.28rem;
+      }
+
+      .lab-title-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.6rem;
+        align-items: baseline;
+      }
+
+      .lab-title {
+        font-size: 0.96rem;
+        color: var(--text-strong);
+      }
+
+      .lab-pill {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        padding: 0.12rem 0.45rem;
+        border-radius: 999px;
+        border: 1px solid rgba(129, 140, 248, 0.7);
+        color: #e0e7ff;
+        background: rgba(15, 23, 42, 0.9);
+        white-space: nowrap;
+      }
+
+      .lab-meta {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+      }
+
+      .lab-summary {
+        font-size: 0.86rem;
+        color: var(--text-muted);
+      }
+
+      .lab-link {
+        margin-top: 0.2rem;
+        font-size: 0.82rem;
+        color: var(--accent);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+      }
+
+      .lab-link:hover {
+        text-decoration: underline;
+      }
+
+      .skills-grid {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .skills-group-title {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        margin-bottom: 0.35rem;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+
+      .chip {
+        font-size: 0.78rem;
+        padding: 0.22rem 0.55rem;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(75, 85, 99, 0.9);
+        color: var(--text-muted);
+      }
+
+      .chip.chip-strong {
+        border-color: rgba(129, 140, 248, 0.9);
+        color: #e0e7ff;
+        background: radial-gradient(
+          circle at top left,
+          rgba(129, 140, 248, 0.45),
+          rgba(15, 23, 42, 0.95)
+        );
+      }
+
+      .lab-index {
+        list-style: none;
+        display: grid;
+        gap: 0.48rem;
+        font-size: 0.86rem;
+        color: var(--text-muted);
+      }
+
+      .lab-index-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.4rem;
+        align-items: baseline;
+      }
+
+      .lab-index-item span:first-child {
+        flex: 1;
+      }
+
+      .lab-index-tag {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--accent-2);
+      }
+
+      .disclaimer {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .disclaimer strong {
+        color: var(--text-strong);
+      }
+
+      .footer-note {
+        margin-top: 1.6rem;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        text-align: right;
+      }
+
+      .footer-note a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .footer-note a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 1.75rem 1rem 2.5rem;
+        }
+
+        .shell {
+          border-radius: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- React + ReactDOM from CDN -->
+    <script
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+      crossorigin
+    ></script>
+    <!-- Babel so we can write JSX directly -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      function Pill({ children }) {
+        return <span className="pill">{children}</span>;
+      }
+
+      function Section({ id, title, eyebrow, children }) {
+        return (
+          <section id={id} className="section">
+            <div className="section-header">
+              {eyebrow && <p className="section-eyebrow">{eyebrow}</p>}
+              <h2>{title}</h2>
+            </div>
+            <div className="section-body">{children}</div>
+          </section>
+        );
+      }
+
+      const labs = [
+        {
+          title: "Analyze FTP Credentials with Wireshark",
+          theme: "Network Traffic Analysis",
+          difficulty: "Foundational",
+          summary:
+            "Inspect FTP traffic in a controlled lab to understand how cleartext protocols expose credentials and why encrypted alternatives matter.",
+          url: "https://github.com/Sudo-Antonio-Castro/CyberSecurity/blob/main/Analyze%20FTP%20Credentials%20with%20Wireshark.md",
+        },
+        {
+          title: "Analyze Passwords using Rainbow Tables",
+          theme: "Password Cracking Concepts",
+          difficulty: "Foundational",
+          summary:
+            "Explore how precomputed hashes can be used against weakly protected passwords and why salts and strong hashing are critical.",
+          url: "https://github.com/Sudo-Antonio-Castro/CyberSecurity/blob/main/Analyze%20Passwords%20using%20Rainbow%20Tables.md",
+        },
+        {
+          title: "Configure Account Password Policies",
+          theme: "Account Hardening",
+          difficulty: "Foundational",
+          summary:
+            "Harden authentication by configuring password length, complexity, and lockout policies aligned with security best practices.",
+          url: "https://github.com/Sudo-Antonio-Castro/CyberSecurity/blob/main/Configure%20Account%20Password%20Policies.md",
+        },
+        {
+          title: "Create a Honeypot with Pentbox",
+          theme: "Threat Detection",
+          difficulty: "Intermediate",
+          summary:
+            "Deploy a small honeypot in a lab to observe scanning and probing behavior while reinforcing the importance of monitoring and logging.",
+          url: "https://github.com/Sudo-Antonio-Castro/CyberSecurity/blob/main/Create%20a%20Honeypot%20with%20Pentbox.md",
+        },
+        {
+          title: "Discover Bluetooth Devices",
+          theme: "Wireless Recon",
+          difficulty: "Foundational",
+          summary:
+            "Use discovery tools in a safe environment to understand how Bluetooth devices advertise themselves and what metadata is exposed.",
+          url: "https://github.com/Sudo-Antonio-Castro/CyberSecurity/blob/main/Discover%20Bluetooth%20Devices.md",
+        },
+        {
+          title: "Manage Certificates",
+          theme: "PKI & Certificates",
+          difficulty: "Intermediate",
+          summary:
+            "Work with digital certificates and certificate stores to understand how trust, encryption, and identity are enforced in practice.",
+          url: "https://github.com/Sudo-Antonio-Castro/CyberSecurity/blob/main/Manage%20Certificates.md",
+        },
+      ];
+
+      const focusAreas = {
+        domains: [
+          "Network traffic analysis",
+          "Authentication & passwords",
+          "Endpoint & account hardening",
+          "Wireless & Bluetooth security",
+          "Public Key Infrastructure (PKI)",
+          "Threat detection & honeypots",
+        ],
+        skills: [
+          "Wireshark fundamentals",
+          "Password hashing & rainbow tables",
+          "Windows security baselines",
+          "Lab design & documentation",
+          "Secure configuration mindset",
+        ],
+        tooling: [
+          "Wireshark",
+          "Pentbox",
+          "Windows security tooling",
+          "Bluetooth discovery utilities",
+          "Certificate management consoles",
+        ],
+      };
+
+      const AVATAR_URL =
+        "https://avatars.githubusercontent.com/u/196356685?v=4";
+
+      function App() {
+        return (
+          <div className="shell">
+            <header>
+              <img
+                src={AVATAR_URL}
+                alt="Antonio Castro"
+                className="avatar"
+              />
+              <div className="headline">
+                <div className="eyebrow">
+                  <span className="eyebrow-dot" />
+                  <span>Security Lab Portfolio</span>
+                </div>
+                <h1>CyberSecurity Labs &amp; Walkthroughs</h1>
+                <div className="title-line">
+                  <span className="title-role">
+                    Hands-on, ethical cybersecurity practice.
+                  </span>
+                  <span className="title-location">
+                    By Antonio Castro · San Diego, CA
+                  </span>
+                </div>
+                <p className="summary">
+                  This repository collects my cybersecurity labs and
+                  walkthroughs. Each exercise is designed to build practical
+                  intuition around defending systems, understanding attacker
+                  techniques, and aligning with responsible, legal use of
+                  security tools.
+                </p>
+                <div className="pill-row">
+                  <Pill>Blue-Team Mindset</Pill>
+                  <Pill>Hands-on Labs</Pill>
+                  <Pill>Documentation-First</Pill>
+                </div>
+                <div className="nav-links">
+                  <a href="#labs">Labs</a>
+                  <a href="#focus">Focus Areas</a>
+                  <a href="#index">Lab Index</a>
+                  <a href="#ethics">Ethics</a>
+                  <a
+                    href="https://sudo-antonio-castro.github.io/Portfolio/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Main Portfolio ↗
+                  </a>
+                </div>
+              </div>
+            </header>
+
+            <main>
+              <div className="left-column">
+                <Section id="about" title="Overview" eyebrow="Repository">
+                  <p>
+                    These labs are built for learning, not for breaking things.
+                    I focus on structured write-ups, clear objectives, and
+                    repeatable steps in controlled environments so the same
+                    scenarios can be revisited by students or hiring managers
+                    reviewing my work.
+                  </p>
+                </Section>
+
+                <Section id="labs" title="Featured Labs" eyebrow="Hands-On Work">
+                  <div className="labs-grid">
+                    {labs.map((lab) => (
+                      <article key={lab.title} className="lab-card">
+                        <div className="lab-title-row">
+                          <h3 className="lab-title">{lab.title}</h3>
+                          <span className="lab-pill">{lab.theme}</span>
+                        </div>
+                        <p className="lab-meta">{lab.difficulty}</p>
+                        <p className="lab-summary">{lab.summary}</p>
+                        <a
+                          className="lab-link"
+                          href={lab.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <span>View full lab on GitHub</span>
+                          <span aria-hidden="true">↗</span>
+                        </a>
+                      </article>
+                    ))}
+                  </div>
+                </Section>
+              </div>
+
+              <div className="right-column">
+                <Section id="focus" title="Focus Areas" eyebrow="What These Labs Build">
+                  <div className="skills-grid">
+                    <div>
+                      <p className="skills-group-title">Domains</p>
+                      <div className="chip-row">
+                        {focusAreas.domains.map((item) => (
+                          <span key={item} className="chip chip-strong">
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="skills-group-title">Skills &amp; Mindset</p>
+                      <div className="chip-row">
+                        {focusAreas.skills.map((item) => (
+                          <span key={item} className="chip">
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="skills-group-title">Tools</p>
+                      <div className="chip-row">
+                        {focusAreas.tooling.map((item) => (
+                          <span key={item} className="chip">
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Section>
+
+                <Section
+                  id="index"
+                  title="Lab Index"
+                  eyebrow="Quick Reference"
+                >
+                  <ul className="lab-index">
+                    {labs.map((lab) => (
+                      <li key={lab.title} className="lab-index-item">
+                        <span>{lab.title}</span>
+                        <span className="lab-index-tag">{lab.theme}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Section>
+
+                <Section
+                  id="ethics"
+                  title="Legal &amp; Ethical Use"
+                  eyebrow="Important"
+                >
+                  <p className="disclaimer">
+                    <strong>All labs are performed in controlled environments</strong>{" "}
+                    such as local virtual machines, intentionally vulnerable
+                    systems, or isolated networks. Nothing here is intended for,
+                    or should be used in, testing systems without explicit,
+                    written authorization from the owner. The goal is to build a
+                    defender&apos;s mindset: understanding attacks so we can
+                    better prevent, detect, and respond to them.
+                  </p>
+                </Section>
+              </div>
+            </main>
+
+            <p className="footer-note">
+              View this repository on{" "}
+              <a
+                href="https://github.com/Sudo-Antonio-Castro/CyberSecurity"
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub
+              </a>{" "}
+              · Back to{" "}
+              <a
+                href="https://sudo-antonio-castro.github.io/Portfolio/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                main portfolio
+              </a>
+              .
+            </p>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
